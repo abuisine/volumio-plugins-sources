@@ -87,13 +87,11 @@ openSoundControl.prototype.onMessagePlay = function(args) {
 
 openSoundControl.prototype.onMessageStop = function(args) {
 	this.logger.info("stop request");
-	this.logger.debug(args);
 	this.commandRouter.volumioStop();
 };
 
 openSoundControl.prototype.onMessageGetState = function(args) {
 	this.logger.info("get state request");
-	this.logger.debug(args);
 	var state = this.commandRouter.volumioGetState();
 	console.log(state);
 };
@@ -101,7 +99,6 @@ openSoundControl.prototype.onMessageGetState = function(args) {
 openSoundControl.prototype.onMessageSetVolume = function(args) {
 	this.logger.info("set volume request");
 	this.commandRouter.volumiosetvolume(args[0].value);
-	this.logger.debug(args);
 };
 
 // Configuration Methods -----------------------------------------------------------------------------
