@@ -1,3 +1,14 @@
 {
- 
+    "osc_body_prefix": {
+        "type": "string",
+        "value": "volumio"
+    },
+    "osc_udp_local_port": {
+        "type": "number",
+        "value": 9998
+    },
+    "osc_udp_remote_port": {
+        "type": "number",
+        "value": 9999
+    }
 }

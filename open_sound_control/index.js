@@ -26,13 +26,11 @@ openSoundControl.prototype.onVolumioStart = function() {
 openSoundControl.prototype.onStart = function() {
 	var defer=libQ.defer();
 
-	console.log("config", this.config.get('osc_body_prefix'));
-
 	// listen for OSC messages and print them to the console
 	this.udp = dgram.createSocket('udp4',  this.onDatagram.bind(this));
 
-	this.udp.bind(9998);
-	this.logger.info('Listening for OSC messages on port 9998');
+	this.udp.bind(this.config.get('osc_udp_local_port'));
+	this.logger.info(`Listening for OSC messages on port ${this.config.get('osc_udp_local_port')}`);
 
 	// Once the Plugin has successfull started resolve the promise
 	defer.resolve();
@@ -106,7 +104,10 @@ openSoundControl.prototype.onMessageSetVolume = function(args) {
 // Configuration Methods -----------------------------------------------------------------------------
 
 openSoundControl.prototype.saveConf = function (data) {
-	console.log(data);
+	data.forEach((key, value) => {
+		this.config.set(key, value);
+	});
+	this.onRestart();
 };
 
 openSoundControl.prototype.getUIConfig = function() {
