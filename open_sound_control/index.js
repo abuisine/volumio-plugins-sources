@@ -16,10 +16,9 @@ function openSoundControl(context) {
 }
 
 openSoundControl.prototype.onVolumioStart = function() {
-	var configFile=this.commandRouter.pluginManager.getConfigurationFile(this.context,'config.json');
+	var configFile = this.commandRouter.pluginManager.getConfigurationFile(this.context,'config.json');
 	this.config = new (require('v-conf'))();
 	this.config.loadFile(configFile);
-
 	return libQ.resolve();
 }
 
@@ -114,6 +113,7 @@ openSoundControl.prototype.getUIConfig = function() {
 	var defer = libQ.defer();
 
 	var lang_code = this.commandRouter.sharedVars.get('language_code');
+	var config = this.config;
 
 	this.commandRouter.i18nJson(__dirname+'/i18n/strings_'+lang_code+'.json',
 		__dirname+'/i18n/strings_en.json',
@@ -121,14 +121,14 @@ openSoundControl.prototype.getUIConfig = function() {
 		.then(function(uiconf)
 		{
 			console.log("trying very hard");
-			var keys = this.config.getKeys('');
+			var keys = config.getKeys();
 			console.log(keys);
 			for (var key in keys) {
 				var idx = uiconf.sections[0].contents.findIndex(content => content.id == key);
 				console.log(idx, content.id, key);
 
 				if (idx >= 0) {
-					uiconf.sections[0].contents[idx].value = this.config.get(key);
+					uiconf.sections[0].contents[idx].value = config.get(key);
 				}
 			}
 			defer.resolve(uiconf);
