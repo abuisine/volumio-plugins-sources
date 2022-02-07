@@ -25,14 +25,19 @@ openSoundControl.prototype.onVolumioStart = function() {
 openSoundControl.prototype.onStart = function() {
 	var defer=libQ.defer();
 
-	// listen for OSC messages and print them to the console
-	this.udp = dgram.createSocket('udp4',  this.onDatagram.bind(this));
+	try {
+		var port = this.config.get('osc_udp_local_port');
 
-	this.udp.bind(this.config.get('osc_udp_local_port'));
-	this.logger.info(`Listening for OSC messages on port ${this.config.get('osc_udp_local_port')}`);
+		this.udp = dgram.createSocket('udp4',  this.onDatagram.bind(this));
+		this.udp.bind(port);
 
-	// Once the Plugin has successfull started resolve the promise
-	defer.resolve();
+		this.logger.info(`Listening for OSC messages on port ${port}`);
+		this.commandRouter.pushToastMessage('success', "OSC plugin", `Listening on port ${port}`);
+		defer.resolve();
+	} catch (err) {
+		this.commandRouter.pushToastMessage('error', "OSC plugin", `Not able to open port ${port}`);
+		defer.reject(err);
+	}
 
 	return defer.promise;
 };
@@ -69,7 +74,7 @@ openSoundControl.prototype.onDatagram = function(msg, rinfo) {
 		else
 			this.logger.warn("message type unknown");
 	} catch (err) {
-		this.logger.error('Could not decode OSC message', err);
+		this.logger.error('Could not decode OSC message', err);		
 	}
 
 };
@@ -92,7 +97,6 @@ openSoundControl.prototype.onMessageStop = function(args) {
 openSoundControl.prototype.onMessageGetState = function(args) {
 	this.logger.info("get state request");
 	var state = this.commandRouter.volumioGetState();
-	console.log(state);
 };
 
 openSoundControl.prototype.onMessageSetVolume = function(args) {
@@ -122,8 +126,6 @@ openSoundControl.prototype.getUIConfig = function() {
 		{
 			for (var key of config.getKeys()) {
 				var idx = uiconf.sections[0].content.findIndex(content => content.id == key);
-				console.log(idx, key);
-
 				if (idx >= 0) {
 					uiconf.sections[0].content[idx].value = config.get(key);
 				}
