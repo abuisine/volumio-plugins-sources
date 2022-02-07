@@ -125,7 +125,7 @@ openSoundControl.prototype.getUIConfig = function() {
 				console.log(idx, key);
 
 				if (idx >= 0) {
-					uiconf.sections[0].contents[idx].value = config.get(key);
+					uiconf.sections[0].content[idx].value = config.get(key);
 				}
 			}
 			defer.resolve(uiconf);
