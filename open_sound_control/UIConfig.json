@@ -26,10 +26,10 @@
           "type": "text",
           "doc": "This plugin will only answer to /<message_prefix>/... calls",
           "label": "Message prefix",
-          "value": "/volumio",
+          "value": "volumio",
           "attributes": [
             {
-              "placeholder": "/volumio"
+              "placeholder": "volumio"
             }
           ]
         }

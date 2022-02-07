@@ -26,6 +26,8 @@ openSoundControl.prototype.onVolumioStart = function() {
 openSoundControl.prototype.onStart = function() {
 	var defer=libQ.defer();
 
+	console.log("config", this.config.get('osc_body_prefix'));
+
 	// listen for OSC messages and print them to the console
 	this.udp = dgram.createSocket('udp4',  this.onDatagram.bind(this));
 
