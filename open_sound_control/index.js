@@ -104,9 +104,9 @@ openSoundControl.prototype.onMessageSetVolume = function(args) {
 // Configuration Methods -----------------------------------------------------------------------------
 
 openSoundControl.prototype.saveConf = function (data) {
-	data.forEach((key, value) => {
-		this.config.set(key, value);
-	});
+	for (const key in data) {
+		this.config.set(key, data[key]);
+	};
 	this.onRestart();
 };
 
