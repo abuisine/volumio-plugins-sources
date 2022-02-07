@@ -16,7 +16,9 @@
       "saveButton": {
         "label": "Save",
         "data": [
-          "osc_body_prefix"
+          "osc_body_prefix",
+          "osc_udp_local_port",
+          "osc_udp_remote_port"
         ]
       },
       "content": [
@@ -26,12 +28,7 @@
           "type": "text",
           "doc": "This plugin will only answer to /<message_prefix>/... calls",
           "label": "Message prefix",
-          "value": "volumio",
-          "attributes": [
-            {
-              "placeholder": "volumio"
-            }
-          ]
+          "value": "volumio"
         },
         {
           "id": "osc_udp_local_port",
@@ -48,7 +45,7 @@
           "label": "Remote client UDP port",
           "doc": "The UDP port on which this plugin will send message back to",
           "value": 9999
-        },
+        }
       ]
     }
   ]
