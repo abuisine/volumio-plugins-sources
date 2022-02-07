@@ -24,8 +24,8 @@
           "id": "osc_body_prefix",
           "element": "input",
           "type": "text",
-          "doc": "MINIDLNA.AUDIO_FOLDER_DOC",
-          "label": "MINIDLNA.AUDIO_FOLDER",
+          "doc": "This plugin will only answer to /<message_prefix>/... calls",
+          "label": "Message prefix",
           "value": "/volumio",
           "attributes": [
             {
