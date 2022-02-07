@@ -105,8 +105,8 @@ openSoundControl.prototype.onMessageSetVolume = function(args) {
 
 // Configuration Methods -----------------------------------------------------------------------------
 
-openSoundControl.prototype.saveSettings = function (data) {
-	this.logger.debug(data);
+openSoundControl.prototype.saveConf = function (data) {
+	console.log(data);
 };
 
 openSoundControl.prototype.getUIConfig = function() {

@@ -32,7 +32,23 @@
               "placeholder": "volumio"
             }
           ]
-        }
+        },
+        {
+          "id": "osc_udp_local_port",
+          "type": "number",
+          "element": "input",
+          "label": "Listening UDP port",
+          "doc": "The UDP port on which this plugin will listen for OSC messages",
+          "value": 9998
+        },
+        {
+          "id": "osc_udp_remote_port",
+          "type": "number",
+          "element": "input",
+          "label": "Remote client UDP port",
+          "doc": "The UDP port on which this plugin will send message back to",
+          "value": 9999
+        },
       ]
     }
   ]
