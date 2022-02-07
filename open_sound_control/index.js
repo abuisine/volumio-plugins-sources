@@ -120,10 +120,8 @@ openSoundControl.prototype.getUIConfig = function() {
 		__dirname + '/UIConfig.json')
 		.then(function(uiconf)
 		{
-			console.log("trying very hard");
-			var keys = config.getKeys();
-			console.log(keys);
-			for (var key in keys) {
+			for (var key of config.getKeys()) {
+				console.log("key", key);
 				var idx = uiconf.sections[0].contents.findIndex(content => content.id == key);
 				console.log(idx, content.id, key);
 
