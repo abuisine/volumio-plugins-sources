@@ -116,18 +116,26 @@ openSoundControl.prototype.getUIConfig = function() {
 	var lang_code = this.commandRouter.sharedVars.get('language_code');
 
 	this.commandRouter.i18nJson(__dirname+'/i18n/strings_'+lang_code+'.json',
-			__dirname+'/i18n/strings_en.json',
-			__dirname + '/UIConfig.json')
-			.then(function(uiconf)
-			{
+		__dirname+'/i18n/strings_en.json',
+		__dirname + '/UIConfig.json')
+		.then(function(uiconf)
+		{
+			var keys = this.config.getKeys();
+			console.log(keys);
+			for (var key in keys) {
+				var idx = uiconf.sections[0].contents.findIndex(content => content.id == key);
+				console.log(idx, content.id, key);
 
-
-					defer.resolve(uiconf);
-			})
-			.fail(function()
-			{
-					defer.reject(new Error());
-			});
+				if (idx >= 0) {
+					uiconf.sections[0].contents[idx].value = this.config.get(key);
+				}
+			}
+			defer.resolve(uiconf);
+		})
+		.fail(function()
+		{
+			defer.reject(new Error());
+		});
 
 	return defer.promise;
 };
