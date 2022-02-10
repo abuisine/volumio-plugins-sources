@@ -88,7 +88,7 @@ openSoundControl.prototype.onDatagram = function(msg, rinfo) {
 openSoundControl.prototype.onMessagePlay = function(subPaths, args) {
 	this.logger.info("play request");
 	console.log(subPaths);
-	var path = subPaths.length() ? subPaths.join('/') : args[0].value;
+	var path = subPaths.length ? subPaths.join('/') : args[0].value;
 	this.logger.debug("path", subPaths, args, path);
 	this.commandRouter.replaceAndPlay({
 				"item": {
