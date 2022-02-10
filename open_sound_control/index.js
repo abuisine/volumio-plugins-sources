@@ -71,7 +71,7 @@ openSoundControl.prototype.onDatagram = function(msg, rinfo) {
 		this.logger.debug(`received message : ${message.address}`);
 		var subPaths = message.address.split('/');
 		if ( subPaths[1] != this.config.get('osc_body_prefix')) {
-			this.logger.warning('message received with wrong root id');
+			this.logger.warn('message received with wrong root id');
 		} else {
 			if ( onMessage[subPaths[2]] )
 				onMessage[subPaths[2]].call(this, subPaths.slice(3), message.args);
