@@ -69,14 +69,12 @@ openSoundControl.prototype.onDatagram = function(msg, rinfo) {
 	try {
 		var message = osc.fromBuffer(msg);
 		this.logger.debug(`received message : ${message.address}`);
-		console.log(message);
 		var subPaths = message.address.split('/');
 		if ( subPaths[1] != this.config.get('osc_body_prefix')) {
 			this.logger.warning('message received with wrong root id');
 		} else {
-			console.log(subPaths);
 			if ( onMessage[subPaths[2]] )
-				onMessage[subPaths[2]].call(this, subPaths.slice(2), message.args);
+				onMessage[subPaths[2]].call(this, subPaths.slice(3), message.args);
 			else
 				this.logger.warn("message type unknown");
 		}
@@ -89,6 +87,8 @@ openSoundControl.prototype.onMessagePlay = function(subPaths, args) {
 	this.logger.info("play request");
 	console.log(subPaths);
 	var path = subPaths.length ? subPaths.join('/') : args[0].value;
+	if (typeof path != 'string')
+		throw new Error('not able to decode music path');
 	this.logger.debug("path", subPaths, args, path);
 	this.commandRouter.replaceAndPlay({
 				"item": {
