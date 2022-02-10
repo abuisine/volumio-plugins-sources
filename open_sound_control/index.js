@@ -86,8 +86,15 @@ openSoundControl.prototype.onDatagram = function(msg, rinfo) {
 openSoundControl.prototype.onMessagePlay = function(subPaths, args) {
 	this.logger.info("play request");
 	console.log(args);
-	var path = subPaths.length ? subPaths.join('/') : args[0].value;
-	if (typeof path != 'string')
+	var path = null;
+	if (subPaths.length) {
+		path = subPaths.join('/');
+		if (!args[0].value)
+			return;
+	} else {
+		path = args[0].value;
+	}
+	if (typeof path !== 'string')
 		throw new Error('not able to decode music path');
 	this.logger.debug("path", subPaths, args, path);
 	this.commandRouter.replaceAndPlay({
@@ -99,7 +106,8 @@ openSoundControl.prototype.onMessagePlay = function(subPaths, args) {
 
 openSoundControl.prototype.onMessageStop = function(subPaths, args) {
 	this.logger.info("stop request");
-	console.log(args);
+	if (!args[0].value)
+		return;
 	this.commandRouter.volumioStop();
 };
 
