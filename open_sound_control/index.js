@@ -85,31 +85,33 @@ openSoundControl.prototype.onDatagram = function(msg, rinfo) {
 
 openSoundControl.prototype.onMessagePlay = function(subPaths, args) {
 	this.logger.info("play request");
-	console.log(subPaths);
+	console.log(args);
 	var path = subPaths.length ? subPaths.join('/') : args[0].value;
 	if (typeof path != 'string')
 		throw new Error('not able to decode music path');
 	this.logger.debug("path", subPaths, args, path);
 	this.commandRouter.replaceAndPlay({
 				"item": {
-					"uri": `${path}`,
 					"service": "mpd",
-					"trackType": "mp3"
+					"uri": `${path}`
 				}});
 };
 
 openSoundControl.prototype.onMessageStop = function(subPaths, args) {
 	this.logger.info("stop request");
+	console.log(args);
 	this.commandRouter.volumioStop();
 };
 
 openSoundControl.prototype.onMessageGetState = function(subPaths, args) {
 	this.logger.info("get state request");
+	console.log(args);
 	var state = this.commandRouter.volumioGetState();
 };
 
 openSoundControl.prototype.onMessageSetVolume = function(subPaths, args) {
 	this.logger.info("set volume request");
+	console.log(args);
 	this.commandRouter.volumiosetvolume(args[0].value);
 };
 
