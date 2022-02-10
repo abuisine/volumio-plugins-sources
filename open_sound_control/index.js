@@ -60,46 +60,55 @@ openSoundControl.prototype.onRestart = function() {
 openSoundControl.prototype.onDatagram = function(msg, rinfo) {
 	this.remote = rinfo.address;
 	var onMessage = {
-		'/play': this.onMessagePlay,
-		'/stop': this.onMessageStop,
-		'/getstate': this.onMessageGetState,
-		'/setvolume': this.onMessageSetVolume
+		'play': this.onMessagePlay,
+		'stop': this.onMessageStop,
+		'getstate': this.onMessageGetState,
+		'setvolume': this.onMessageSetVolume
 	};
 
 	try {
 		var message = osc.fromBuffer(msg);
 		this.logger.debug(`received message : ${message.address}`);
-		if ( onMessage[message.address] )
-			onMessage[message.address].call(this, message.args);
+
+		var subPaths = message.address.split('/');
+		if ( subPaths[1] != this.config.get('osc_body_prefix')) {
+			throw new Error('message received with wrong root id');
+		}
+
+		if ( onMessage[subPaths[2]] )
+			onMessage[subPaths[2]].call(this, subPaths.slice(2), message.args);
 		else
 			this.logger.warn("message type unknown");
 	} catch (err) {
-		this.logger.error('Could not decode OSC message', err);		
+		this.logger.error('could not decode OSC message', err);		
 	}
 
 };
 
-openSoundControl.prototype.onMessagePlay = function(args) {
+openSoundControl.prototype.onMessagePlay = function(subPaths, args) {
 	this.logger.info("play request");
+
+	var path = subPaths.length() ? subPaths.join('/') : args[0].value;
+	this.logger.debug("path", subPaths, args, path);
 	this.commandRouter.replaceAndPlay({
 				"item": {
-					"uri": `${args[0].value}`,
+					"uri": `${path}`,
 					"service": "mpd",
 					"trackType": "mp3"
 				}});
 };
 
-openSoundControl.prototype.onMessageStop = function(args) {
+openSoundControl.prototype.onMessageStop = function(subPaths, args) {
 	this.logger.info("stop request");
 	this.commandRouter.volumioStop();
 };
 
-openSoundControl.prototype.onMessageGetState = function(args) {
+openSoundControl.prototype.onMessageGetState = function(subPaths, args) {
 	this.logger.info("get state request");
 	var state = this.commandRouter.volumioGetState();
 };
 
-openSoundControl.prototype.onMessageSetVolume = function(args) {
+openSoundControl.prototype.onMessageSetVolume = function(subPaths, args) {
 	this.logger.info("set volume request");
 	this.commandRouter.volumiosetvolume(args[0].value);
 };
