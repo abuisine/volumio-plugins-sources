@@ -1,6 +1,6 @@
 {
 	"name": "open_sound_control",
-	"version": "1.0.0",
+	"version": "0.99.0",
 	"description": "Control Volumio through Open Sound Control protocol",
 	"main": "index.js",
 	"scripts": {
